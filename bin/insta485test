@@ -1,0 +1,16 @@
+#!/bin/bash
+# bin/insta485test
+# insta485test - Run style checks, linting, and tests for Insta485
+# Stops on first error and prints each command.
+
+set -euo pipefail
+IFS=$'\n\t'
+set -x
+
+# Run style checks
+pycodestyle insta485
+pydocstyle insta485
+pylint insta485
+
+# Run tests
+pytest -v tests

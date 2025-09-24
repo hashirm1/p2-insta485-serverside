@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account - Insta485</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav>
+        <a href="{{ url_for('show_login') }}">Login</a>
+    </nav>
+    <div class="create-page">
+        <h1>Sign Up</h1>
+        <form action="{{ url_for('update_account') }}?target={{ url_for('show_index') }}" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="file" name="file" accept="image/*" required>
+            <input type="text" name="fullname" placeholder="Full Name" required>
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <input type="submit" name="signup" value="sign up">
+            <input type="hidden" name="operation" value="create">
+        </form>
+        <p><a href="{{ url_for('show_login') }}">Have an account? Log in</a></p>
+    </div>
+</body>
+</html>

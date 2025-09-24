@@ -1,0 +1,64 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+<div class="profile">
+    <div class="profile-header">
+        <img src="{{ user_img_url }}" alt="{{ username }}" class="profile-avatar">
+        <div class="profile-info">
+            <h1>{{ username }}</h1>
+            <div class="profile-stats">
+                <span>{{ posts_count }} {% if posts_count == 1 %}post{% else %}posts{% endif %}</span>
+                <a href="{{ url_for('show_followers', user_url_slug=username) }}">{{ followers }} {% if followers == 1 %}follower{% else %}followers{% endif %}</a>
+                <a href="{{ url_for('show_following', user_url_slug=username) }}">{{ following_count }} following</a>
+            </div>
+            <p>{{ fullname }}</p>
+            
+            {% if following == "following" %}
+                <form action="{{ url_for('update_following') }}?target={{ request.url }}" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <input type="submit" name="unfollow" value="unfollow">
+                    <input type="hidden" name="username" value="{{ username }}">
+                    <input type="hidden" name="operation" value="unfollow">
+                </form>
+            {% elif following == "not following" %}
+                <form action="{{ url_for('update_following') }}?target={{ request.url }}" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <input type="submit" name="follow" value="follow">
+                    <input type="hidden" name="username" value="{{ username }}">
+                    <input type="hidden" name="operation" value="follow">
+                </form>
+            {% endif %}
+            
+            {% if logname == username %}
+                <a href="{{ url_for('show_edit') }}">Edit Profile</a>
+                <form action="{{ url_for('logout') }}" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <input type="submit" name="logout" value="Logout">
+                </form>
+                
+                <form action="{{ url_for('update_posts') }}?target={{ request.url }}" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <input type="file" name="file" accept="image/*" required>
+                    <input type="submit" name="create_post" value="upload new post">
+                    <input type="hidden" name="operation" value="create">
+                </form>
+            {% endif %}
+        </div>
+    </div>
+    
+    <div class="posts-grid">
+        {% if posts %}
+            {% for post in posts %}
+            <div class="post-thumbnail">
+                <a href="{{ url_for('show_post', postid_url_slug=post.postid) }}">
+                    <img src="{{ url_for('show_upload', filename=post.filename) }}" alt="Post">
+                </a>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>No posts yet.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

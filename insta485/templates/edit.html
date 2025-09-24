@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="edit-page">
+    <h1>Edit Profile</h1>
+    <img src="{{ url_for('show_upload', filename=filename) }}" alt="{{ logname }}" class="profile-avatar">
+    <p>{{ logname }}</p>
+    
+    <form action="{{ url_for('update_account') }}?target={{ request.url }}" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <input type="file" name="file" accept="image/*">
+        <input type="text" name="fullname" value="{{ fullname }}" required>
+        <input type="email" name="email" value="{{ email }}" required>
+        <input type="submit" name="update" value="submit">
+        <input type="hidden" name="operation" value="edit_account">
+    </form>
+    
+    <p><a href="{{ url_for('show_password') }}">Change Password</a></p>
+    <p><a href="{{ url_for('show_delete') }}">Delete Account</a></p>
+</div>
+{% endblock %}

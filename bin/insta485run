@@ -1,0 +1,21 @@
+#!/bin/bash
+# bin/insta485run
+# Run the Insta485 development server
+
+# Exit on errors, unset vars, or failed pipes
+set -o errexit
+set -o nounset
+set -o pipefail
+
+DB_FILE="var/insta485.sqlite3"
+
+# Check database existence
+if [[ ! -f "$DB_FILE" ]]; then
+  echo "Error: can't find database $DB_FILE" >&2
+  echo "Try: ./bin/insta485db create" >&2
+  exit 1
+fi
+
+# Run the Flask dev server
+echo "+ flask --app insta485 --debug run --host 0.0.0.0 --port 8000"
+exec flask --app insta485 --debug run --host 0.0.0.0 --port 8000

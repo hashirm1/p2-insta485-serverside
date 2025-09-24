@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="delete-page">
+    <h1>Delete Account</h1>
+    <p>Are you sure you want to delete your account, {{ logname }}?</p>
+    
+    <form action="{{ url_for('update_account') }}?target={{ url_for('show_create') }}" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <input type="submit" name="delete" value="confirm delete account">
+        <input type="hidden" name="operation" value="delete">
+    </form>
+</div>
+{% endblock %}
